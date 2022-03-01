@@ -1,42 +1,4 @@
-import {
-  applyTransform,
-  drawPath,
-  drawPoint,
-  setSize,
-  background,
-  clear,
-} from "./draw.js";
-
-setSize(innerWidth, innerHeight);
-background("black");
-
-let deleteEquals = (points) => {
-  let result = [];
-
-  for (let point of points) {
-    if (
-      !result.some((item) => {
-        if (typeof item == "object") {
-          for (let i in item) {
-            if (item[i] != point[i]) {
-              return false;
-            }
-          }
-        } else if (item != point) {
-          return false;
-        }
-
-        return true;
-      })
-    ) {
-      result.push(point);
-    }
-  }
-
-  return result;
-};
-
-function checkPoints(points) {
+export function checkPoints(points) {
   for (let i = 0; i < points.length; i++) {
     for (let j = i; j < points.length; j++) {
       if (points[i][0] == points[j][0] && points[i][1] == points[j][1]) {
@@ -50,7 +12,8 @@ function checkPoints(points) {
 
   return points;
 }
-function orderPoints(points) {
+
+export function orderPoints(points) {
   let vertical = true;
 
   let path = [[0, 0]];
@@ -90,8 +53,10 @@ function orderPoints(points) {
 
   return path;
 }
-function filterNextStartPoints(points) {
+
+export function filterNextStartPoints(points) {
   let list = [];
+  
   for (let i = 0; i < points.length; i++) {
     let a = points[i % points.length];
     let b = points[(i + 1) % points.length];
@@ -99,9 +64,13 @@ function filterNextStartPoints(points) {
       list.push(a);
     }
   }
+  
+  
+
   return list;
 }
-function getPointsOfShape(shapes) {
+
+export function getPointsOfShape(shapes) {
   let points = [];
   for (let i = 0; i < shapes.length; i++) {
     let shape = shapes[i];
@@ -116,7 +85,7 @@ function getPointsOfShape(shapes) {
   return points;
 }
 
-function moveShape(shape, pos) {
+export function moveShape(shape, pos) {
   let result = [];
   for (let point of shape) {
     if (point.length == 3) {
@@ -128,7 +97,7 @@ function moveShape(shape, pos) {
   return result;
 }
 
-function rectPath(width, height, x, y) {
+export function rectPath(width, height, x, y) {
   return [
     [x, y],
     [width + x, y],
@@ -137,14 +106,7 @@ function rectPath(width, height, x, y) {
   ];
 }
 
-let shapes = [
-  rectPath(80, 80, 0, 0),
-  rectPath(50, 50, 0, 0),
-  rectPath(50, 150, 0, 0),
-  rectPath(90, 150, 0, 0),
-];
-
-function calcPosibleShapePosition(
+export function calcPosibleShapePosition(
   shapes,
   width,
   height,
@@ -152,13 +114,11 @@ function calcPosibleShapePosition(
   startPoints = [[0, 0]],
   shapesOnSpace = [],
 ) {
-  //
   if (shapes.length == idx) {
     return [shapesOnSpace];
   }
 
   let shape = shapes[idx];
-
   let posibleShapesOnSpace = startPoints.map((point) =>
     moveShape(shape, point),
   );
@@ -185,33 +145,3 @@ function calcPosibleShapePosition(
 
   return result;
 }
-
-let posibleShapePosition = calcPosibleShapePosition(shapes, 200, 20);
-
-let idx =2;
-let counter = 0;
-
-clear();
-background("black");
-
-for (let shapePosition of posibleShapePosition[idx]) {
-  drawPath(shapePosition, "red");
-}
-/*    
-function loop() {
-  if (counter % 50 == 0) {
-    clear();
-    background("black");
-    if (idx == posibleShapePosition.length) {
-      idx = 0;
-    }
-    for (let shapePosition of posibleShapePosition[idx]) {
-      drawPath(shapePosition, "red");
-    }
-    idx++;
-  }
-
-  counter++;
-  requestAnimationFrame(loop);
-}
-requestAnimationFrame(loop); */
