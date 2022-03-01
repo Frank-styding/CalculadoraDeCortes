@@ -56,7 +56,7 @@ export function orderPoints(points) {
 
 export function filterNextStartPoints(points) {
   let list = [];
-  
+
   for (let i = 0; i < points.length; i++) {
     let a = points[i % points.length];
     let b = points[(i + 1) % points.length];
@@ -64,8 +64,6 @@ export function filterNextStartPoints(points) {
       list.push(a);
     }
   }
-  
-  
 
   return list;
 }
@@ -119,6 +117,21 @@ export function calcPosibleShapePosition(
   }
 
   let shape = shapes[idx];
+
+  
+
+
+  let previus = filterNextStartPoints(
+    orderPoints(
+      checkPoints(getPointsOfShape([...shapesOnSpace])),
+    ),
+  );
+
+  console.log(previus)
+
+
+
+
   let posibleShapesOnSpace = startPoints.map((point) =>
     moveShape(shape, point),
   );
@@ -128,7 +141,7 @@ export function calcPosibleShapePosition(
     let nextStartPoints = filterNextStartPoints(
       orderPoints(
         checkPoints(getPointsOfShape([...shapesOnSpace, posibleShape])),
-      ),
+      )
     );
 
     result.push(
