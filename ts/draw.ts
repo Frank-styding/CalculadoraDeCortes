@@ -1,8 +1,9 @@
 let canvas = document.createElement("canvas");
 document.body.appendChild(canvas);
-let ctx = canvas.getContext("2d");
 
-export function setSize(width, height) {
+let ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+
+export function setSize(width: number, height: number) {
   canvas.width = width;
   canvas.height = height;
 }
@@ -10,14 +11,14 @@ export function setSize(width, height) {
 export function clear() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
-export function background(color) {
+export function background(color: string) {
   ctx.save();
   ctx.fillStyle = color;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.restore();
 }
 
-export function drawPoint(x, y, color, radius) {
+export function drawPoint(x: number, y: number, color: string, radius: number) {
   ctx.save();
   ctx.beginPath();
   ctx.fillStyle = color;
@@ -27,12 +28,12 @@ export function drawPoint(x, y, color, radius) {
 }
 
 export function drawPath(
-  points,
-  color,
-  lineWidth,
-  showPoints = false,
-  radius = 1,
-  pointColor = undefined,
+  points: [number, number][],
+  color: string,
+  lineWidth: number,
+  showPoints: boolean = false,
+  radius: number = 1,
+  pointColor: string | undefined = undefined,
 ) {
   ctx.save();
 
@@ -61,12 +62,12 @@ export function drawPath(
 }
 
 export function applyTransform(
-  callback,
-  x,
-  y,
-  xScale = 1,
-  yScale = 1,
-  angle = 0,
+  callback: () => void,
+  x: number,
+  y: number,
+  xScale: number = 1,
+  yScale: number = 1,
+  angle: number = 0,
 ) {
   const cos = Math.cos(angle);
   const sin = Math.sin(angle);
@@ -76,5 +77,18 @@ export function applyTransform(
   ctx.transform(cos, -sin, sin, cos, 0, 0);
   ctx.transform(xScale, 0, 0, yScale, 0, 0);
   callback();
+  ctx.restore();
+}
+
+export function drawStrokeRect(
+  width: number,
+  height: number,
+  x: number,
+  y: number,
+  color: string,
+) {
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.strokeRect(x, y, width, height);
   ctx.restore();
 }
