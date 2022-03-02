@@ -3,10 +3,13 @@ import { rectPath, calcPosibleShapePosition, rotateShape, } from "./calcPosibleS
 setSize(innerWidth, innerHeight);
 background("black");
 let shapes = [
-    rectPath(20, 50, 0, 0),
     rectPath(150, 90, 0, 0),
+    rectPath(20, 50, 0, 0),
     rectPath(50, 100, 0, 0),
     rectPath(50, 50, 0, 0),
+    rectPath(50, 50, 0, 0),
+    rectPath(50, 90, 0, 0),
+    rectPath(20, 20, 0, 0),
 ];
 let width = 170;
 let height = 200;
@@ -25,9 +28,11 @@ function loop() {
         if (idx == posibleShapePosition.length) {
             idx = 0;
         }
+        applyTransform(() => {
+            drawStrokeRect(width, height, 0, 0, "white");
+        }, 400, 400);
         for (let shapePosition of posibleShapePosition[idx]) {
             applyTransform(() => {
-                drawStrokeRect(width, height, 0, 0, "white");
                 drawPath(shapePosition, "red", 2);
             }, 400, 400);
         }

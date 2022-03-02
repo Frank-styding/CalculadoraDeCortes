@@ -79,19 +79,7 @@ export function moveShape(shape, pos) {
     return result;
 }
 export function rotateShape(shape) {
-    let maxX = 0;
-    let maxY = 0;
-    for (let point of shape) {
-        maxX = Math.max(point[0], maxX);
-        maxY = Math.max(point[1], maxY);
-    }
-    let centerX = maxX / 2;
-    let centerY = maxY / 2;
-    console.log(centerX + " " + centerY);
-    return shape
-        .map((point) => [point[0] - centerX, point[1] - centerY])
-        .map((point) => [point[1], -point[0]])
-        .map((point) => [point[0] + centerX, point[1] + centerY]);
+    return shape.map((point) => [point[1], point[0]]);
 }
 export function intersectLine(a, b, c, d) {
     let _a = a, _b = b, _c = c, _d = d;

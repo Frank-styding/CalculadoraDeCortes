@@ -32,7 +32,7 @@ export function orderPoints(points: [number, number][]) {
       .filter((point) => {
         return (
           !path.some(
-            (point1) => point1[0] == point[0] && point1[1] == point[1],
+            (point1) => point1[0] == point[0] && point1[1] == point[1]
           ) &&
           point[direction] == currentPoint[direction] &&
           point[1 - direction] != currentPoint[1 - direction]
@@ -41,7 +41,7 @@ export function orderPoints(points: [number, number][]) {
       .sort(
         (a, b) =>
           Math.abs(a[1 - direction] - currentPoint[1 - direction]) -
-          Math.abs(b[1 - direction] - currentPoint[1 - direction]),
+          Math.abs(b[1 - direction] - currentPoint[1 - direction])
       )[0];
 
     if (nextPoint != undefined) {
@@ -71,7 +71,7 @@ export function filterNextStartPoints(points: [number, number][]) {
 }
 
 export function getPointsOfShape(
-  shapes: ([number, number] | [number, number, number[]])[][],
+  shapes: ([number, number] | [number, number, number[]])[][]
 ) {
   let points: [number, number, number[]][] = [];
   for (let i = 0; i < shapes.length; i++) {
@@ -89,7 +89,7 @@ export function getPointsOfShape(
 
 export function moveShape(
   shape: ([number, number] | [number, number, number[]])[],
-  pos: [number, number],
+  pos: [number, number]
 ) {
   let result: ([number, number] | [number, number, number[]])[] = [];
   for (let point of shape) {
@@ -103,28 +103,14 @@ export function moveShape(
 }
 
 export function rotateShape(shape: [number, number][]) {
-  let maxX = 0;
-  let maxY = 0;
-  for (let point of shape) {
-    maxX = Math.max(point[0], maxX);
-    maxY = Math.max(point[1], maxY);
-  }
-
-  let centerX = maxX / 2;
-  let centerY = maxY / 2;
-
-  console.log(centerX + " " + centerY)
-  return shape
-    .map((point) => [point[0] - centerX , point[1] - centerY])
-    .map((point) => [point[1],-point[0]])
-    .map((point) => [point[0] + centerX, point[1] + centerY]);
+  return shape.map((point) => [point[1], point[0]]);
 }
 
 export function intersectLine(
   a: [number, number],
   b: [number, number],
   c: [number, number],
-  d: [number, number],
+  d: [number, number]
 ) {
   let _a = a,
     _b = b,
@@ -160,7 +146,7 @@ export function intersectLine(
 
 export function intersectShapes(
   shapeA: [number, number][],
-  shapeB: [number, number][],
+  shapeB: [number, number][]
 ) {
   for (let i = 0; i < shapeA.length; i++) {
     for (let j = 0; j < shapeB.length; j++) {
@@ -169,7 +155,7 @@ export function intersectShapes(
           shapeA[i % shapeA.length],
           shapeA[(i + 1) % shapeA.length],
           shapeB[j % shapeB.length],
-          shapeB[(j + 1) % shapeB.length],
+          shapeB[(j + 1) % shapeB.length]
         )
       ) {
         return true;
@@ -196,7 +182,7 @@ export function existIntersect(shapes: [number, number][][]) {
 export function isInMaxSpace(
   shapes: [number, number][][],
   width: number,
-  height: number,
+  height: number
 ) {
   let points = getPointsOfShape(shapes);
   return (
@@ -209,7 +195,7 @@ export function rectPath(
   width: number,
   height: number,
   x: number,
-  y: number,
+  y: number
 ): [number, number][] {
   return [
     [x, y],
@@ -225,7 +211,7 @@ export function calcPosibleShapePosition(
   height: number,
   idx = 0,
   startPoints: [number, number][] = [[0, 0]],
-  shapesOnSpace: [number, number][][] = [],
+  shapesOnSpace: [number, number][][] = []
 ): [number, number][][][] {
   if (startPoints.length == 0) {
     return [];
@@ -237,7 +223,7 @@ export function calcPosibleShapePosition(
   let shape = shapes[idx];
 
   let posibleShapesOnSpace: [number, number][][] = startPoints.map((point) =>
-    moveShape(shape, point),
+    moveShape(shape, point)
   ) as [number, number][][];
 
   for (let posibleShape of posibleShapesOnSpace) {
@@ -251,8 +237,8 @@ export function calcPosibleShapePosition(
     ) {
       let nextStartPoints = filterNextStartPoints(
         orderPoints(
-          checkPoints(getPointsOfShape(nextShapes)) as [number, number][],
-        ) as [number, number][],
+          checkPoints(getPointsOfShape(nextShapes)) as [number, number][]
+        ) as [number, number][]
       );
       let aux = calcPosibleShapePosition(
         shapes,
@@ -260,7 +246,7 @@ export function calcPosibleShapePosition(
         height,
         idx + 1,
         nextStartPoints,
-        nextShapes,
+        nextShapes
       );
       if (aux.length > 0) {
         return aux;
